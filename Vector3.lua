@@ -7,11 +7,13 @@ local type = type
 local vector_mt = {}
 
 -- Divran's idea.
-local function new(x,y,z)
-	return setmetatable( {x = x or 0, y = y or 0, z = z or 0} , vector_mt) 
+local function new(xV,yV,zV)
+	-- The random 255 is a hack until I have vector4 or a specific RGBA type.
+	return setmetatable( {x = x or 0, y = y or 0, z = z or 0} , vector_mt)
 end
 
 Vector3 = new
+
 
 function vector_mt:__add( vector )
 	return new( 
