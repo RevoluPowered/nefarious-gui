@@ -89,13 +89,14 @@ local button = GUI.Button(buttonText, Vector2(25,25), Vector2(GUI.MinTextWidth(b
 -- Label and Input box.
 local input = GUI.TextInput("Input", Vector2(labelWidth + 25,60), Vector2(125, 25))
 local label = GUI.Label(labelText, Vector2(25, 60), Vector2(labelWidth, 25))
-
+local image = GUI.Image("Picture", Vector2(25, 150), "imageExample.png", Vector2(0.25, 0.25));
 
 --local inputbox = GUI.CreateComponent( "Text Input example", Vector2(25,55), Vector2(75, 25), GUI.RenderTextInput)
 local pane = GUI.CreatePane("Main Pane", Vector2(65,0), Vector2(600, 400))
 pane:AddComponent( button );
 pane:AddComponent( input );
-pane:AddComponent( label )
+pane:AddComponent( label );
+pane:AddComponent( image );
 --pane:AddComponent( inputbox )
 function love.draw()
 	pane:render()

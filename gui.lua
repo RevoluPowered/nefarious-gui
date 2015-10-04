@@ -6,9 +6,6 @@ local vector3 = require("vector3")
 local UISkin = require("GUISkin")
 
 local GUI = {}
-
-
-
 local rectF = love.graphics.rectangle
 
 -- function to check if mouse is between the bounds of the specified element.
@@ -40,11 +37,35 @@ end
 -- Simpler API instead of assigning render functions which should be hidden in the backround of the system.
 
 --
+-- Image
+-- images will be loaded ONLY from the data folder.
+GUI.Image = function( name, position, imagePath, scale )
+	-- Set scale.
+	if scale == nil then scale = Vector2(1,1) end
+	
+	local image = love.graphics.newImage("Data/" .. imagePath);
+
+	local component = GUI.CreateComponent( name, position, size, function( component, rootNode )
+		local pos = component.pos + rootNode.pos;
+		local size = component.size;
+		-- render image.
+		love.graphics.setColor(255,255,255);
+		love.graphics.draw(component.image, pos.x, pos.y, 0, scale.x, scale.y)
+		love.graphics.setColor(0,0,0);
+	end)
+	
+	-- Assign image to local self.
+	component.image = image;
+	
+	return component;
+end
+
+--
 -- Label
 --
 GUI.Label = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderLabel)
-	component.textAlign = "left"; -- the text alignment left, center, right;
+	component.textAlign = "right"; -- the text alignment left, center, right;
 	return component;
 end
 
@@ -65,13 +86,13 @@ GUI.RenderLabel = function( component, rootNode )
 	-- Text alignment.
 	--	
 	if(component.textAlign == "left") then
-		textXpos = textXpos + 10;
+		textXpos = textXpos;
 	elseif (component.textAlign == "center") then
 		textXpos = textXpos + ((size.x / 2) - (textWidth / 2)); -- offset must also be by the actual width of the text logically.
 	elseif (component.textAlign == "right") then
 		assert(textWidth <= size.x) -- throw an error if an issue arises
 		--textXpos = textWidth
-		textXpos = textXpos +(size.x - (textWidth + 10));
+		textXpos = textXpos +(size.x - (textWidth));
 	end
 	
 	
@@ -156,6 +177,7 @@ GUI.TextInput = function( name, position, size )
 	component.enableKeyboard = true;
 	component.textAlign = "center"; -- the text alignment left, center, right;
 	component.maxChars = 16;
+	component.placeholder = "placeholder";
 	component.KeyPressed = function( key )		
 		
 		-- if value >= maxwidth  
@@ -206,7 +228,16 @@ GUI.RenderTextInput = function( component, rootNode )
 	end
 	love.graphics.setColor(0,0,0)
 	-- Render on screen (text)
-	love.graphics.print( component.value, pos.x + 10, pos.y + 5)
+	if #component.value == 0 then
+		-- Set color to placeholder skin
+		love.graphics.setColor(UISkin.button.placeholder)
+		love.graphics.print( component.placeholder, pos.x + 10, pos.y + 5)
+	else
+		love.graphics.print( component.value, pos.x + 10, pos.y + 5)
+	end
+	
+	-- Reset colour
+	love.graphics.setColor(0,0,0)
 end
 
 

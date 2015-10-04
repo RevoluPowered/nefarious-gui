@@ -7,6 +7,7 @@ local function GetDefaultSkin()
 		['hover'] = {200,200,200}, -- ideally || arg[1]
 		['active'] = {255,255,255}, -- ideally || arg[2]
 		['background'] = {255,255,255,235}, -- ideally || arg[3]
+		['placeholder'] = {112,138,144}
 	}
 end
 
