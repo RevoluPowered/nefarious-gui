@@ -39,6 +39,46 @@ end
 
 -- Simpler API instead of assigning render functions which should be hidden in the backround of the system.
 
+--
+-- Label
+--
+GUI.Label = function( name, position, size )
+	local component = GUI.CreateComponent( name, position, size, GUI.RenderLabel)
+	component.textAlign = "left"; -- the text alignment left, center, right;
+	return component;
+end
+
+-- Component is the local object, the rootnode is the parent which is supplied for the offset.
+GUI.RenderLabel = function( component, rootNode )
+	local pos = component.pos + rootNode.pos;
+	local size = component.size;
+	local text = component.name;
+	
+	-- Clear COLOUR
+	love.graphics.setColor(UISkin.button.default)
+	local textWidth = love.graphics.getFont():getWidth(text)
+	
+	local textXpos = pos.x;
+	
+	
+	--
+	-- Text alignment.
+	--	
+	if(component.textAlign == "left") then
+		textXpos = textXpos + 10;
+	elseif (component.textAlign == "center") then
+		textXpos = textXpos + ((size.x / 2) - (textWidth / 2)); -- offset must also be by the actual width of the text logically.
+	elseif (component.textAlign == "right") then
+		assert(textWidth <= size.x) -- throw an error if an issue arises
+		--textXpos = textWidth
+		textXpos = textXpos +(size.x - (textWidth + 10));
+	end
+	
+	
+	love.graphics.setColor(0,0,0)
+	-- Render on screen (text)
+	love.graphics.print( text, textXpos, pos.y + 5)
+end
 
 --
 -- BUTTON 
@@ -48,10 +88,9 @@ end
 GUI.Button = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderButton)
 	component.status = false;
-	component.textAlign = "left"; -- the text alignment left, center, right;
+	component.textAlign = "center"; -- the text alignment left, center, right;
 	return component;
 end
-
 
 -- Component is the local object, the rootnode is the parent which is supplied for the offset.
 GUI.RenderButton = function( component, rootNode )
@@ -108,31 +147,29 @@ end
 
 --
 -- TEXT Input
--- 
-
+--
 
 -- Text input - this is for putting in information.
 GUI.TextInput = function( name, position, size )
-	local component = GUI.CreateComponent( name, position, size, GUI.RenderTextInput)
-	
+	local component = GUI.CreateComponent( name, position, size, GUI.RenderTextInput)	
 	component.value = "";
 	component.enableKeyboard = true;
-	component.KeyPressed = function( key )
-		
+	component.textAlign = "center"; -- the text alignment left, center, right;
+	component.maxChars = 16;
+	component.KeyPressed = function( key )		
 		
 		-- if value >= maxwidth  
 		-- how do i get the count of the chars that can fit within the text box without changing the width dynamically?
 		local lenght = love.graphics.getFont():getWidth(component.value)
-		if #component.value >= 32 then return end 
+		if #component.value >= component.maxChars then return end 
 		print("Debug control: " .. key)
+		
 		-- Calculate width based upon the text string, so a max width variable must be first checked before updating the text value?! or alternatively something else?
 		component.value = component.value .. key;		
 	end
 	
 	return component;	
 end
-
-
 
 -- Component is the local object, the rootnode is the parent which is supplied for the offset.
 GUI.RenderTextInput = function( component, rootNode )
@@ -146,12 +183,11 @@ GUI.RenderTextInput = function( component, rootNode )
 	-- set the offset
 	local offset = love.graphics.getFont():getWidth(component.value)
 	
-	
 	-- Check button mousebounds for hover over effect to see if its required.
-	if( GUI.MouseBounds(pos, Vector2( offset + 20, size.y))) then
+	if( GUI.MouseBounds(pos, Vector2( size.x, size.y))) then
 		-- GUI BUTTON hover
 		love.graphics.setColor(UISkin.button.hover)
-		rectF("fill", pos.x, pos.y, offset + 20, size.y)
+		rectF("fill", pos.x, pos.y, size.x, size.y)
 		
 		-- GUI BUTTON activate
 		if( love.mouse.isDown('l')) then
@@ -159,12 +195,12 @@ GUI.RenderTextInput = function( component, rootNode )
 			component.status = true
 		else
 			component.status = false
-			--love.graphics.setColor(0,255,0)]]
+			--love.graphics.setColor(0,255,0)
 		end
 	else
 		-- GUI BUTTON background
 		love.graphics.setColor(UISkin.button.default)
-		rectF("fill", pos.x, pos.y, offset + 20, size.y)
+		rectF("fill", pos.x, pos.y, size.x, size.y)
 		love.graphics.setColor(0,0,0)
 		component.status = false
 	end

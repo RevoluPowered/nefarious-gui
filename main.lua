@@ -80,13 +80,22 @@ defineControl( "myname", 20, etc... )
 local number = 0
 
 local buttonText = "Example button";
+local labelText = "Example label:";
+local labelWidth = GUI.MinTextWidth(labelText);
 
 local button = GUI.Button(buttonText, Vector2(25,25), Vector2(GUI.MinTextWidth(buttonText), 25));
-local input = GUI.TextInput("Input", Vector2(25,60), Vector2(125, 25))
+
+
+-- Label and Input box.
+local input = GUI.TextInput("Input", Vector2(labelWidth + 25,60), Vector2(125, 25))
+local label = GUI.Label(labelText, Vector2(25, 60), Vector2(labelWidth, 25))
+
+
 --local inputbox = GUI.CreateComponent( "Text Input example", Vector2(25,55), Vector2(75, 25), GUI.RenderTextInput)
 local pane = GUI.CreatePane("Main Pane", Vector2(65,0), Vector2(600, 400))
 pane:AddComponent( button );
 pane:AddComponent( input );
+pane:AddComponent( label )
 --pane:AddComponent( inputbox )
 function love.draw()
 	pane:render()
