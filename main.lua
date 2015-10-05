@@ -72,11 +72,17 @@ defineControl( "myname", 20, etc... )
 
 local number = 0
 
-local buttonText = "Example button";
+local buttonText = "Press me";
 local labelText = "Example label:";
 local labelWidth = GUI.MinTextWidth(labelText);
 
-local button = GUI.Button(buttonText, Vector2(25,25), Vector2(GUI.MinTextWidth(buttonText), 25));
+---
+--- Button
+--- This additionally has a label on the left side of it.
+local buttonLabelText = "Example button: ";
+local buttonLabel = GUI.Label(buttonLabelText, Vector2(25,25), Vector2(GUI.MinTextWidth(buttonLabelText),25))
+
+local button = GUI.Button(buttonText, Vector2(buttonLabel.pos.x + buttonLabel.size.x,25), Vector2(GUI.MinTextWidth(buttonText), 25));
 
 
 -- Label and Input box.
@@ -86,9 +92,9 @@ local image = GUI.Image("Picture", Vector2(25, 150), "imageExample.png", Vector2
 
 
 local submitText = "Submit"
-local exampleSubmit = GUI.Button(submitText, Vector2(input.pos.x + input.size.x + 10, input.pos.y), Vector2(GUI.MinTextWidth(submitText),25));
+local exampleSubmit = GUI.Button(submitText, Vector2(input.pos.x + input.size.x, input.pos.y), Vector2(GUI.MinTextWidth(submitText),25));
 exampleSubmit.buttonStateChanged = function ( state  )
-	if( state == true ) then
+	if( state == true and input.value ~= "" ) then
 		print("Data submitted: [ ".. input.value .. " ]");
 		input.value = "";
 	end	
@@ -96,6 +102,7 @@ end
 --local inputbox = GUI.CreateComponent( "Text Input example", Vector2(25,55), Vector2(75, 25), GUI.RenderTextInput)
 local pane = GUI.CreatePane("Main Pane", Vector2(65,0), Vector2(600, 400))
 pane:AddComponent( button );
+pane:AddComponent( buttonLabel );
 pane:AddComponent( input );
 pane:AddComponent( label );
 pane:AddComponent( image );
@@ -107,6 +114,9 @@ function love.draw()
 	if(button.status) then 
 		button.name = "Pressed: " .. number;
 		number = number + 1
+		
+		-- Automatically adjust width of the button so that it automatically expands.
+		button.size.x = GUI.MinTextWidth( button.name );
 	end
 	
 	
