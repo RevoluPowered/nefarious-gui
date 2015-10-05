@@ -9,7 +9,19 @@ local commandText = "_"
 local mouseImagePath = "Data/cursor.png"
 
 local vector2 = require("vector2")
-local GUI = require("gui")
+
+--
+-- GUI ELEMENTS
+--
+
+local GUI = require("gui");
+GUI.TextInput = require("UIElements.TextInput");
+GUI.Image = require("UIElements.Image");
+GUI.Label = require("UIElements.Label");
+GUI.Button = require("UIElements.Button");
+--
+-- END GUI ELEMENTS.
+--
 
 
 function love.load()
