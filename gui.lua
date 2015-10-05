@@ -65,7 +65,7 @@ end
 --
 GUI.Label = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderLabel)
-	component.textAlign = "right"; -- the text alignment left, center, right;
+	component.textAlign = "left"; -- the text alignment left, center, right;
 	return component;
 end
 
@@ -110,6 +110,7 @@ GUI.Button = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderButton)
 	component.status = false;
 	component.textAlign = "center"; -- the text alignment left, center, right;
+	component.buttonStateChanged = function (v) end;
 	return component;
 end
 
@@ -148,11 +149,18 @@ GUI.RenderButton = function( component, rootNode )
 		
 		-- GUI BUTTON activate
 		if( love.mouse.isDown('l')) then
-			love.graphics.setColor(UISkin.button.active)
-			component.status = true
+			love.graphics.setColor(UISkin.button.active);
+			-- validate the status has at least been reset before calling this again otherwise it will constantly be updated.
+			if component.status ~= true then
+				component.status = true
+				component.buttonStateChanged( true );
+			end
 		else
-			component.status = false
-			--love.graphics.setColor(0,255,0)]]
+			-- validate the status has at least been reset before calling this again otherwise it will constantly be updated.
+			if component.status ~= false then
+				component.status = false
+				component.buttonStateChanged( false );
+			end
 		end
 	else
 		-- GUI BUTTON background
@@ -179,6 +187,12 @@ GUI.TextInput = function( name, position, size )
 	component.maxChars = 16;
 	component.placeholder = "placeholder";
 	component.KeyPressed = function( key )		
+		-- Adding handling for backspace chars.
+		if key == "backspace" then
+			--print("backspace found");
+			component.value = component.value:sub(1,-2);
+			return; -- exit as we're done.
+		end
 		
 		-- if value >= maxwidth  
 		-- how do i get the count of the chars that can fit within the text box without changing the width dynamically?

@@ -26,8 +26,10 @@ end
 --					  --
 
 -- Handle text being entered.
+-- cant remember why i tried to use this... might be to avoid control chars being put in text boxes.
 function love.textinput(t)
-	commandText = commandText .. t
+	--commandText = commandText .. t
+	
 	
 	for k, v in pairs(GUI.Components) do
 		if( v.enableKeyboard == true and v.KeyPressed ~= nil) then
@@ -37,23 +39,14 @@ function love.textinput(t)
 end
 
 
-function love.keypressed(key)
-	if key == "backspace" then
-		local byteoffset = utf8.offset(commandText, -1)
-		if byteoffset then
-			commandText = string.sub(commandText, 1, byteoffset - 1)
-		end
+function love.keypressed(t)
+	if( t == "backspace" ) then
+		love.textinput(t); -- allow this char through.
 	end
-	
-	-- send events to gui elements that require input being sent to them.
-	-- foreach control
-	-- if control.selected and control.enablekeyboard then
-	-- control.keyPressed( key )
-	-- done.
-	
-
-	
 end
+
+
+
 --[[
 
 Example control addition usage:
@@ -91,12 +84,22 @@ local input = GUI.TextInput("Input", Vector2(labelWidth + 25,60), Vector2(125, 2
 local label = GUI.Label(labelText, Vector2(25, 60), Vector2(labelWidth, 25))
 local image = GUI.Image("Picture", Vector2(25, 150), "imageExample.png", Vector2(0.25, 0.25));
 
+
+local submitText = "Submit"
+local exampleSubmit = GUI.Button(submitText, Vector2(input.pos.x + input.size.x + 10, input.pos.y), Vector2(GUI.MinTextWidth(submitText),25));
+exampleSubmit.buttonStateChanged = function ( state  )
+	if( state == true ) then
+		print("Data submitted: [ ".. input.value .. " ]");
+		input.value = "";
+	end	
+end
 --local inputbox = GUI.CreateComponent( "Text Input example", Vector2(25,55), Vector2(75, 25), GUI.RenderTextInput)
 local pane = GUI.CreatePane("Main Pane", Vector2(65,0), Vector2(600, 400))
 pane:AddComponent( button );
 pane:AddComponent( input );
 pane:AddComponent( label );
 pane:AddComponent( image );
+pane:AddComponent( exampleSubmit );
 --pane:AddComponent( inputbox )
 function love.draw()
 	pane:render()
