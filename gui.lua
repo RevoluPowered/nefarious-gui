@@ -323,6 +323,22 @@ end
 -- #skinable interface
 -- #buttons, text boxes, input boxes,images, panels, frames, iframes?, custom interfaces for custom controls.
 
+--[[ 
+Completed:
+	buttons,
+	text input,
+	images,
+	panels,
+	
+Todo:
+	(high priority)
+	list box
+	(low priority)
+	textbox - with auto text wrapping. 
+	frames - perhaps, not too sure about this yet.0
+]]
+
+
 -- this should actually return a 'gui.component' object as this can then be used to create a procedural user interface from different components and accessable later from a lua table.
 
 
