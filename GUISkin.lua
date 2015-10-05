@@ -15,4 +15,5 @@ return {
 	['button'] = GetDefaultSkin(),
 	['pane'] = GetDefaultSkin(),
 	['TextInput'] = GetDefaultSkin(),
+	['ListBox'] = GetDefaultSkin()
 }
