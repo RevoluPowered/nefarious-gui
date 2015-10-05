@@ -4,8 +4,6 @@
 
 local utf8 = require("utf8")
 local rectF = love.graphics.rectangle
-
-local commandText = "_"
 local mouseImagePath = "Data/cursor.png"
 
 local vector2 = require("vector2")
@@ -39,10 +37,7 @@ end
 
 -- Handle text being entered.
 -- cant remember why i tried to use this... might be to avoid control chars being put in text boxes.
-function love.textinput(t)
-	--commandText = commandText .. t
-	
-	
+function love.textinput(t)	
 	for k, v in pairs(GUI.Components) do
 		if( v.enableKeyboard == true and v.KeyPressed ~= nil) then
 			v.KeyPressed( t )
@@ -105,12 +100,16 @@ local image = GUI.Image("Picture", Vector2(25, 150), "imageExample.png", Vector2
 
 local submitText = "Submit"
 local exampleSubmit = GUI.Button(submitText, Vector2(input.pos.x + input.size.x, input.pos.y), Vector2(GUI.MinTextWidth(submitText),25));
-exampleSubmit.buttonStateChanged = function ( state  )
+exampleSubmit.buttonStateChanged = function ( state )
 	if( state == true and input.value ~= "" ) then
 		print("Data submitted: [ ".. input.value .. " ]");
 		input.value = "";
 	end	
 end
+
+
+
+
 --local inputbox = GUI.CreateComponent( "Text Input example", Vector2(25,55), Vector2(75, 25), GUI.RenderTextInput)
 local pane = GUI.CreatePane("Main Pane", Vector2(65,0), Vector2(600, 400))
 pane:AddComponent( button );
@@ -119,6 +118,19 @@ pane:AddComponent( input );
 pane:AddComponent( label );
 pane:AddComponent( image );
 pane:AddComponent( exampleSubmit );
+
+
+
+local exitAppLabel = "Exit test"
+local exitApplication = GUI.Button(exitAppLabel, Vector2(pane.size.x - GUI.MinTextWidth(exitAppLabel) - 10,10), Vector2(GUI.MinTextWidth(exitAppLabel), 25))
+exitApplication.buttonStateChanged = function ( state )
+	print("Shutting down...");
+	love.event.quit();
+end
+pane:AddComponent( exitApplication );
+
+
+
 --pane:AddComponent( inputbox )
 function love.draw()
 	pane:render()
