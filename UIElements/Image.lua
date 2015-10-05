@@ -9,7 +9,7 @@ local vector3 = require("vector3")
 local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
-Image = function( name, position, imagePath, scale )
+local Image = function( name, position, imagePath, scale )
 	-- Set scale.
 	if scale == nil then scale = Vector2(1,1) end
 	

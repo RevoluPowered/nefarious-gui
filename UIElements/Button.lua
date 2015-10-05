@@ -8,7 +8,7 @@ local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
 -- This allows also custom construction of properties to be added to the elements.
-Button = function( name, position, size )
+local Button = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderButton)
 	component.status = false;
 	component.textAlign = "center"; -- the text alignment left, center, right;

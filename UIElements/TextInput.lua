@@ -9,7 +9,7 @@ local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
 -- Text input - this is for putting in information.
-TextInput = function( name, position, size )
+local TextInput = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderTextInput)	
 	component.value = "";
 	component.enableKeyboard = true;

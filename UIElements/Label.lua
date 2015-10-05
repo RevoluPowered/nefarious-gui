@@ -8,7 +8,7 @@ local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
 
-Label = function( name, position, size )
+local Label = function( name, position, size )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderLabel)
 	component.textAlign = "left"; -- the text alignment left, center, right;
 	return component;
