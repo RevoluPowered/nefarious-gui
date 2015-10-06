@@ -128,7 +128,7 @@ end
 pane:AddComponent( exitApplication );
 
 -- ListBox
-local testListBox = GUI.ListBox("listbox example", Vector2(25,300), Vector2(125,25));
+local testListBox = GUI.ListBox("listbox example", Vector2(25,300), Vector2(125,25), {"File", "Open", "Delete"});
 
 pane:AddComponent( testListBox );
 

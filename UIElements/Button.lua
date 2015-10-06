@@ -28,6 +28,9 @@ GUI.RenderButton = function( component, rootNode )
 	
 	local textXpos = pos.x;
 	
+	if component.name == "dropdown_test2" then
+		print("DEBUG CLASS DETECTED");
+	end
 	
 	--
 	-- Text alignment.

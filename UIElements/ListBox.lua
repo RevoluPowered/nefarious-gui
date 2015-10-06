@@ -3,7 +3,9 @@
 -- A list box.
 -- 
 
-local GUI = require("gui")
+local GUI = require("gui");
+-- button element required for listbox only.
+GUI.Button = require("UIElements.Button");
 local vector2 = require("vector2")
 local vector3 = require("vector3")
 local UISkin = require("GUISkin")
@@ -14,57 +16,55 @@ local rectF = love.graphics.rectangle;
 -- todo: make this reliable.
 local function getFirst(t)
 	for k,v in pairs(t) do
-		return
-		{
-			["k"] = k,
-			["v"] = v
-		}
+		print("v", v)
+		return v; -- exit immediately.
 	end	
 end
 
-
+--
+-- Main ListBox construction function.
+--
 local ListBox = function( name, position, size, items )
 	local component = GUI.CreateComponent( name, position, size, GUI.RenderListBox)
+	-- standard properties
 	component.textAlign = "left"; -- the text alignment left, center, right;
 	component.status = false; -- used to handle change in the button.
-	if items ~= nil then
-		component.selected = getFirst(items);
-		component.items = items; -- a table, indexed by strings as keys, the values are functions.
+	
+	-- set up list objects but first check for errors!
+	assert (items ~= nil);
+	component.selected = getFirst(items);
+	component.items = items;	
+	component.expanded = false;
+	-- function pointer/event hook for later use.
+	component.OnValueUpdated = function( value ) end
+	
+	-- this is broken
+	component.mSelectedButton = GUI.Button("dropdown_test", position, size)
+	component.mSelectedButton.buttonStateChanged = function( value )
+		if value == true then			
+			component.expanded = not component.expanded;
+			print("Expand control detected: ", component.expanded);
+		end
 	end
+	
 	return component;
 end
 
--- Example item table
-local example =
-{
-	["File"] = function() print("File button.") end,
-	["Open"] = function() print("Open button.") end
-}
-
-local RenderSelectionButton = function( text, position, size, returnValue )
- -- todo.
-end
-
-
-
-
+-- Basic known limitations, no scroll bar yet!
 GUI.RenderListBox = function( component, rootNode )
-	if component.items == nil then 
-		component.items = example;
-		component.selected = getFirst(example);
-		
-	end
+	-- is the listbox expanded.
+		-- render the expanded objects of the list box.
+	-- else
+	-- CLEAR COLOUR reset to default for rendering.
+	love.graphics.setColor(255,255,255)
 	
-	-- Component properties.
-	local pos = component.pos + rootNode.pos;
-	local size = component.size;
-	
-	-- Is the dropdown expanded.
-	if(component.expanded == true) then
-		-- render expanded.
-		
-	else
-		
+	--- this isn't rendering
+	local v = component.mSelectedButton;
+	-- manual rendering test
+	GUI.RenderButton( v, rootNode )
+	--v:render(v);
+	-- comp:render();
+		-- display current value of object.
 end
 
 return ListBox;
