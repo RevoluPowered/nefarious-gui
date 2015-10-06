@@ -1,0 +1,3 @@
+@echo off
+echo Starting Love2D Engine...
+"C:\Program Files\LOVE\Love.exe" %CD%
