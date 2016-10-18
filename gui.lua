@@ -1,8 +1,8 @@
 --
 -- GUI
 -- Authored by Gordon Alexander MacPherson
-local vector2 = require("vector2")
-local vector3 = require("vector3")
+local vector2 = require("Vector2")
+local vector3 = require("Vector3")
 local UISkin = require("GUISkin")
 
 local GUI = {}
@@ -14,10 +14,10 @@ local rectF = love.graphics.rectangle;
 -- function to check if mouse is between the bounds of the specified element.
 GUI.MouseBounds = function( pos, size )
 	local x, y = love.mouse.getPosition();
-	
+
 	local boundRight = pos.x + size.x;
 	local boundBottomRight = pos.y + size.y;
-	
+
 	if( x >= pos.x and x <= boundRight and y >= pos.y and y <= boundBottomRight ) then
 		return true;
 	else
@@ -32,7 +32,7 @@ end
 -- Event handling needed added:
 -- KeyPressed, KeyReleased.
 -- MousePressed
--- MouseReleased 
+-- MouseReleased
 -- So input.buttonDown will only return true once until the key or button has been released again.
 -- This is like OIS or for example even unity.
 
@@ -43,7 +43,7 @@ end
 GUI.Components = {}
 
 -- At the minute this doesn't actually make sense to use, however later I will be adding in some component based logic.
-GUI.CreateComponent = function( name, pos, size, renderfunc )	 
+GUI.CreateComponent = function( name, pos, size, renderfunc )
 
 	-- Return the default table.
 	local tbl = {
@@ -51,15 +51,15 @@ GUI.CreateComponent = function( name, pos, size, renderfunc )
 		--['Enabled'] = true, -- if this isn't enabled the controls on a UI generally go to a darker colour.
 		--['Layer'] = 0; -- the numbers of layers will be sorted by 0 ... 99 with the lower number being first in the queue.
 		['name'] = name,
-		['pos'] = pos,	
+		['pos'] = pos,
 		['size'] = size,
 		['render'] = renderfunc, -- the default render function. normally really a specifier for the type of component or at least its render behaviour.
-		['enableKeyboard'] = false, 
+		['enableKeyboard'] = false,
 	}
-	
+
 	-- Register the new GUI Component.
 	table.insert( GUI.Components, tbl )
-	
+
 	-- Return the new component.
 	return tbl;
 end
@@ -73,10 +73,10 @@ GUI.CreatePane = function( name, pos, size )
 		-- Just a debug background for the pane.
 		love.graphics.setColor(UISkin.pane.background) -- The pane background colour.
 		rectF("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-		
+
 		-- CLEAR COLOUR reset to default for rendering.
 		love.graphics.setColor(UISkin.pane.default)
-		
+
 		-- Render each component
 		for i in ipairs(self.components) do
 			local comp = self.components[i]
@@ -88,15 +88,15 @@ GUI.CreatePane = function( name, pos, size )
 	component.AddComponent = function( self, component )
 		if component == nil then return end;
 		print("Added component to pane.")
-		table.insert(self.components, component );	
-	end	
-	
+		table.insert(self.components, component );
+	end
+
 	component.components = {}
-	return component;	
+	return component;
 end
 
 
--- Backend 
+-- Backend
 -- #automatic layer sorting and rendering for ui components.
 -- #skining functionality for components.
 -- #event support so that for instance some new gui events exist including: control.activated, control.changed, etc... perhaps even just a pointer to an activate function blargh. notes..
@@ -108,19 +108,19 @@ end
 -- #skinable interface
 -- #buttons, text boxes, input boxes,images, panels, frames, iframes?, custom interfaces for custom controls.
 
---[[ 
+--[[
 Completed:
 	buttons,
 	text input,
 	images,
 	panels,
-	
+
 Todo:
 	(high priority)
 	list box
 	dialog / draggable windows
 	(low priority)
-	textbox - with auto text wrapping. 
+	textbox - with auto text wrapping.
 	frames - perhaps, not too sure about this yet.0
 ]]
 

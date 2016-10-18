@@ -6,7 +6,7 @@ local utf8 = require("utf8")
 local rectF = love.graphics.rectangle
 local mouseImagePath = "Data/cursor.png"
 
-local vector2 = require("vector2")
+local vector2 = require("Vector2")
 
 --
 -- GUI ELEMENTS
@@ -39,11 +39,11 @@ end
 
 -- Handle text being entered.
 -- cant remember why i tried to use this... might be to avoid control chars being put in text boxes.
-function love.textinput(t)	
+function love.textinput(t)
 	for k, v in pairs(GUI.Components) do
 		if( v.enableKeyboard == true and v.KeyPressed ~= nil) then
 			v.KeyPressed( t )
-		end	
+		end
 	end
 end
 
@@ -60,8 +60,8 @@ end
 
 Example control addition usage:
 
-local examplecontrol = 
-{ 
+local examplecontrol =
+{
 	ControlName,
 	DrawOrder,
 	[Size]{X,Y},
@@ -106,7 +106,7 @@ exampleSubmit.buttonStateChanged = function ( state )
 	if( state == true and input.value ~= "" ) then
 		print("Data submitted: [ ".. input.value .. " ]");
 		input.value = "";
-	end	
+	end
 end
 
 -- Main pane for the GUI system.
@@ -136,11 +136,11 @@ pane:AddComponent( testListBox );
 -- Love2D Draw function.
 function love.draw()
 	pane:render()
-	
-	if(button.status) then 
+
+	if(button.status) then
 		button.name = "Pressed: " .. number;
 		number = number + 1
-		
+
 		-- Automatically adjust width of the button so that it automatically expands.
 		button.size.x = GUI.MinTextWidth( button.name );
 	end

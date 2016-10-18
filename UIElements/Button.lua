@@ -1,9 +1,9 @@
 --
--- BUTTON 
+-- BUTTON
 --
 local GUI = require("gui")
-local vector2 = require("vector2")
-local vector3 = require("vector3")
+local vector2 = require("Vector2")
+local vector3 = require("Vector3")
 local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
@@ -21,20 +21,20 @@ GUI.RenderButton = function( component, rootNode )
 	local pos = component.pos + rootNode.pos;
 	local size = component.size;
 	local text = component.name;
-	
+
 	-- Clear COLOUR
 	love.graphics.setColor(UISkin.button.default)
 	local textWidth = love.graphics.getFont():getWidth(text)
-	
+
 	local textXpos = pos.x;
-	
+
 	if component.name == "dropdown_test2" then
 		print("DEBUG CLASS DETECTED");
 	end
-	
+
 	--
 	-- Text alignment.
-	--	
+	--
 	if(component.textAlign == "left") then
 		textXpos = textXpos + 10;
 	elseif (component.textAlign == "center") then
@@ -44,16 +44,16 @@ GUI.RenderButton = function( component, rootNode )
 		--textXpos = textWidth
 		textXpos = textXpos +(size.x - (textWidth + 10));
 	end
-	
-	
+
+
 	-- Check button mousebounds for hover over effect to see if its required.
 	if( GUI.MouseBounds(pos, Vector2( size.x, size.y))) then
 		-- GUI BUTTON hover
 		love.graphics.setColor(UISkin.button.hover)
 		rectF("fill", pos.x, pos.y, size.x, size.y)
-		
+
 		-- GUI BUTTON activate
-		if( love.mouse.isDown('l')) then
+		if( love.mouse.isDown(1)) then
 			love.graphics.setColor(UISkin.button.active);
 			-- validate the status has at least been reset before calling this again otherwise it will constantly be updated.
 			if component.status ~= true then

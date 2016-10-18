@@ -2,8 +2,8 @@
 -- Label
 --
 local GUI = require("gui")
-local vector2 = require("vector2")
-local vector3 = require("vector3")
+local vector2 = require("Vector2")
+local vector3 = require("Vector3")
 local UISkin = require("GUISkin")
 local rectF = love.graphics.rectangle;
 
@@ -19,17 +19,17 @@ GUI.RenderLabel = function( component, rootNode )
 	local pos = component.pos + rootNode.pos;
 	local size = component.size;
 	local text = component.name;
-	
+
 	-- Clear COLOUR
 	love.graphics.setColor(UISkin.button.default)
 	local textWidth = love.graphics.getFont():getWidth(text)
-	
+
 	local textXpos = pos.x;
-	
-	
+
+
 	--
 	-- Text alignment.
-	--	
+	--
 	if(component.textAlign == "left") then
 		textXpos = textXpos;
 	elseif (component.textAlign == "center") then
@@ -39,8 +39,8 @@ GUI.RenderLabel = function( component, rootNode )
 		--textXpos = textWidth
 		textXpos = textXpos +(size.x - (textWidth));
 	end
-	
-	
+
+
 	love.graphics.setColor(0,0,0)
 	-- Render on screen (text)
 	love.graphics.print( text, textXpos, pos.y + 5)
