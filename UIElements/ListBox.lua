@@ -52,6 +52,17 @@ end
 
 -- Basic known limitations, no scroll bar yet!
 GUI.RenderListBox = function( component, rootNode )
+	if component.expanded == true then
+		local x = 0
+		component.dropdown_elements = {}
+		for k,v in pairs(component.items) do
+			component.dropdown_elements[k] = GUI.Button(v, component.pos + Vector2(0,x*30),component.size )
+			print(x * 30)
+			x = x + 1
+		end
+		-- render ui elements
+		GUI.RenderTable(component.dropdown_elements);
+	end
 	-- is the listbox expanded.
 		-- render the expanded objects of the list box.
 	-- else

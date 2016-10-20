@@ -64,7 +64,13 @@ GUI.CreateComponent = function( name, pos, size, renderfunc )
 	return tbl;
 end
 
-
+GUI.RenderTable = function( elements )
+	-- Render each component
+	for i in ipairs(elements) do
+		local comp = elements[i]
+		comp:render(self)
+	end
+end
 
 GUI.CreatePane = function( name, pos, size )
 	-- Create a component.
